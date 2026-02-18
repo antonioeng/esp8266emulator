@@ -1,0 +1,195 @@
+/**
+ * Terminal.css — Estilos de la consola Serial Monitor
+ */
+
+.terminal {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #11111b;
+  overflow: hidden;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+}
+
+/* ── Header ───────────────────────────────────────────────────── */
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #181825;
+  border-bottom: 1px solid #313244;
+  flex-shrink: 0;
+}
+
+.terminal-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #cdd6f4;
+}
+
+.terminal-icon {
+  font-size: 10px;
+}
+
+.log-count {
+  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: 8px;
+  background: #313244;
+  color: #6c7086;
+  font-weight: 600;
+}
+
+.terminal-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.terminal-btn {
+  padding: 4px 8px;
+  border: 1px solid #45475a;
+  border-radius: 4px;
+  background: #313244;
+  color: #a6adc8;
+  font-size: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s ease;
+}
+
+.terminal-btn:hover {
+  background: #45475a;
+  color: #cdd6f4;
+}
+
+/* ── Output ───────────────────────────────────────────────────── */
+
+.terminal-output {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0;
+  min-height: 0;
+}
+
+.terminal-output::-webkit-scrollbar {
+  width: 6px;
+}
+
+.terminal-output::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.terminal-output::-webkit-scrollbar-thumb {
+  background: #313244;
+  border-radius: 3px;
+}
+
+.terminal-output::-webkit-scrollbar-thumb:hover {
+  background: #45475a;
+}
+
+/* ── Empty State ──────────────────────────────────────────────── */
+
+.terminal-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 8px;
+  color: #45475a;
+  font-size: 12px;
+  text-align: center;
+  padding: 20px;
+}
+
+.empty-icon {
+  font-size: 24px;
+  opacity: 0.5;
+}
+
+.empty-hint {
+  font-size: 10px;
+  color: #313244;
+}
+
+/* ── Log Lines ────────────────────────────────────────────────── */
+
+.log-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 2px 12px;
+  font-size: 11px;
+  line-height: 1.5;
+  transition: background 0.1s ease;
+}
+
+.log-line:hover {
+  background: rgba(205, 214, 244, 0.03);
+}
+
+.log-timestamp {
+  color: #45475a;
+  font-size: 10px;
+  flex-shrink: 0;
+  min-width: 70px;
+}
+
+.log-type-badge {
+  font-size: 8px;
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  min-width: 24px;
+  text-align: center;
+}
+
+.log-type-badge.info {
+  background: rgba(166, 227, 161, 0.15);
+  color: #a6e3a1;
+}
+
+.log-type-badge.warn {
+  background: rgba(249, 226, 175, 0.15);
+  color: #f9e2af;
+}
+
+.log-type-badge.error {
+  background: rgba(243, 139, 168, 0.15);
+  color: #f38ba8;
+}
+
+.log-source-badge {
+  font-size: 7px;
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 2px;
+  background: rgba(137, 180, 250, 0.15);
+  color: #89b4fa;
+  flex-shrink: 0;
+}
+
+.log-message {
+  flex: 1;
+  word-break: break-word;
+}
+
+/* Color por tipo */
+.log-info .log-message {
+  color: #a6e3a1;
+}
+
+.log-warn .log-message {
+  color: #f9e2af;
+}
+
+.log-error .log-message {
+  color: #f38ba8;
+}

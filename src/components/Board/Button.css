@@ -1,0 +1,70 @@
+/**
+ * Button.css — Estilos del botón físico simulado
+ */
+
+.board-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+}
+
+.btn-physical {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  background: #313244;
+  border: 2px solid #585b70;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.1s ease;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-physical:hover {
+  border-color: #89b4fa;
+}
+
+.btn-physical:active,
+.board-button.pressed .btn-physical {
+  transform: scale(0.92);
+  background: #45475a;
+  border-color: #f38ba8;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.btn-cap {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: #6c7086;
+  transition: all 0.1s ease;
+}
+
+.board-button.pressed .btn-cap {
+  background: #f38ba8;
+  box-shadow: 0 0 8px rgba(243, 139, 168, 0.4);
+}
+
+.btn-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.btn-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #cdd6f4;
+}
+
+.btn-pin {
+  font-size: 8px;
+  color: #6c7086;
+  font-family: 'JetBrains Mono', monospace;
+}

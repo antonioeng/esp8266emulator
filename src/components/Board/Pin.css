@@ -1,0 +1,162 @@
+/**
+ * Pin.css — Realistic through-hole header pin styling
+ */
+
+/* ── Pin row ──────────────────────────────────────────────────── */
+
+.hdr-pin {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  cursor: default;
+  height: 22px;
+}
+
+.hdr-pin.clickable {
+  cursor: pointer;
+}
+
+.hdr-pin.clickable:hover .hdr-dot {
+  transform: scale(1.25);
+  box-shadow:
+    0 0 6px rgba(200, 168, 50, 0.6),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+/* Flip for left side: label – dot */
+.hdr-pin.left {
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.hdr-pin.right {
+  flex-direction: row;
+}
+
+/* ── Gold dot (through-hole pin) ──────────────────────────────── */
+
+.hdr-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #f0d860, #c8a832, #a08020);
+  border: 1px solid #8a7020;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+/* HIGH state — green glow */
+.hdr-dot.high {
+  background: radial-gradient(circle at 35% 35%, #b8f0a0, #6ac04a, #48a030);
+  border-color: #3a8028;
+  box-shadow:
+    0 0 8px rgba(106, 192, 74, 0.6),
+    0 0 16px rgba(106, 192, 74, 0.2),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+/* Power pin colors */
+.hdr-dot.pwr {
+  background: radial-gradient(circle at 35% 35%, #ff8888, #d04040, #b03030);
+  border-color: #902828;
+}
+
+.hdr-dot.gnd {
+  background: radial-gradient(circle at 35% 35%, #555566, #333340, #222230);
+  border-color: #1a1a24;
+}
+
+/* ── Label ────────────────────────────────────────────────────── */
+
+.hdr-label {
+  font-size: 7px;
+  font-weight: 700;
+  color: rgba(180, 200, 220, 0.7);
+  letter-spacing: 0.3px;
+  font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap;
+  user-select: none;
+  min-width: 22px;
+}
+
+.left-label {
+  text-align: right;
+}
+
+.right-label {
+  text-align: left;
+}
+
+/* Configured pins get brighter labels */
+.hdr-pin.configured .hdr-label {
+  color: rgba(200, 214, 244, 0.9);
+}
+
+.hdr-pin.high .hdr-label {
+  color: #a6e3a1;
+}
+
+/* ── Tooltip ──────────────────────────────────────────────────── */
+
+.hdr-tooltip {
+  position: absolute;
+  z-index: 100;
+  background: #1e1e2e;
+  border: 1px solid #585b70;
+  border-radius: 6px;
+  padding: 6px 8px;
+  width: 140px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
+.hdr-tooltip.left {
+  right: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.hdr-tooltip.right {
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.tt-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 1px 0;
+  font-size: 10px;
+}
+
+.tt-key {
+  color: #6c7086;
+  font-weight: 500;
+}
+
+.tt-val {
+  color: #cdd6f4;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.tt-val.v-high {
+  color: #a6e3a1;
+}
+
+.tt-val.v-low {
+  color: #6c7086;
+}
+
+.tt-hint {
+  font-size: 8px;
+  color: #89b4fa;
+  text-align: center;
+  margin-top: 3px;
+  padding-top: 3px;
+  border-top: 1px solid #313244;
+}

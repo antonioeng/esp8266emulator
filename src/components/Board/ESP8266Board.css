@@ -1,0 +1,502 @@
+/**
+ * ESP8266Board.css — Realistic NodeMCU DevKit V3 PCB styling
+ */
+
+/* ── Wrapper ──────────────────────────────────────────────────── */
+
+.board-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 32px;
+  zoom: 1.45;
+}
+
+.external-components {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+/* ── Board assembly ───────────────────────────────────────────── */
+
+.nodemcu-board {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  filter: drop-shadow(0 12px 40px rgba(0, 0, 0, 0.7));
+}
+
+/* ── Pin headers (gold strips along edges) ────────────────────── */
+
+.pin-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 22px 0 42px;
+  gap: 1px;
+}
+
+.pin-header.left { align-items: flex-end; }
+.pin-header.right { align-items: flex-start; }
+
+/* ── PCB Body ─────────────────────────────────────────────────── */
+
+.pcb-body {
+  width: 200px;
+  min-height: 440px;
+  background:
+    linear-gradient(180deg, #1a3328 0%, #0d261a 40%, #0a1f15 100%);
+  border: 2px solid #2a5a3a;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 14px;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+
+  /* PCB texture overlay */
+  background-image:
+    radial-gradient(circle at 20% 80%, rgba(40, 100, 60, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(30, 80, 50, 0.1) 0%, transparent 50%);
+}
+
+/* Soldermask edges */
+.pcb-body::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px solid rgba(50, 120, 70, 0.25);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+/* Silkscreen corner marks */
+.pcb-body::after {
+  content: 'NodeMCU V3';
+  position: absolute;
+  bottom: 58px;
+  right: 12px;
+  font-size: 6px;
+  font-weight: 700;
+  color: rgba(200, 220, 200, 0.3);
+  letter-spacing: 0.8px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── Antenna / RF Shield ──────────────────────────────────────── */
+
+.antenna-area {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.rf-shield {
+  width: 80%;
+  height: 64px;
+  background: linear-gradient(145deg, #b8b8c0 0%, #8a8a94 30%, #a0a0a8 50%, #7a7a84 100%);
+  border-radius: 3px;
+  border: 1px solid #6a6a74;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Metal texture lines */
+.rf-shield::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 4px,
+    rgba(0, 0, 0, 0.03) 4px,
+    rgba(0, 0, 0, 0.03) 5px
+  );
+}
+
+.rf-shield-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wifi-symbol {
+  opacity: 0.7;
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
+}
+
+.antenna-trace {
+  width: 2px;
+  height: 8px;
+  background: #c8a832;
+  border-radius: 1px;
+  box-shadow: 0 0 2px rgba(200, 168, 50, 0.5);
+}
+
+/* ── ESP8266 Main Chip ────────────────────────────────────────── */
+
+.esp-chip {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: 6px 0;
+}
+
+.chip-pins-side {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.chip-leg {
+  width: 6px;
+  height: 2px;
+  background: linear-gradient(90deg, #c8a832, #e0c040);
+  border-radius: 0.5px;
+}
+
+.chip-body {
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(145deg, #2a2a34 0%, #1a1a24 50%, #222230 100%);
+  border: 1px solid #3a3a48;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  position: relative;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.chip-text-main {
+  font-size: 8px;
+  font-weight: 800;
+  color: rgba(200, 210, 220, 0.6);
+  letter-spacing: 1px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.chip-text-sub {
+  font-size: 5px;
+  color: rgba(150, 160, 170, 0.4);
+  letter-spacing: 0.5px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.chip-dot {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(200, 210, 220, 0.2);
+}
+
+/* ── SMD Components ───────────────────────────────────────────── */
+
+.pcb-components {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0;
+}
+
+.smd-ic {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.smd-ic-body {
+  width: 48px;
+  height: 22px;
+  background: linear-gradient(145deg, #222230, #1a1a26);
+  border: 1px solid #333344;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.smd-ic-label {
+  font-size: 5px;
+  font-weight: 700;
+  color: rgba(180, 190, 200, 0.4);
+  letter-spacing: 0.5px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.smd-ic-pins {
+  display: flex;
+  justify-content: space-around;
+  width: 44px;
+}
+
+.smd-pin {
+  width: 4px;
+  height: 3px;
+  background: linear-gradient(180deg, #c8a832, #b09028);
+  border-radius: 0.5px;
+}
+
+.smd-passives {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.smd-resistor {
+  width: 8px;
+  height: 4px;
+  background: linear-gradient(90deg, #2a2a34, #1e1e28, #2a2a34);
+  border: 0.5px solid #3a3a48;
+  border-radius: 0.5px;
+}
+
+.smd-cap {
+  width: 5px;
+  height: 5px;
+  background: #c8a040;
+  border-radius: 0.5px;
+  border: 0.5px solid #a08030;
+}
+
+.smd-regulator {
+  width: 28px;
+  height: 14px;
+  background: linear-gradient(145deg, #222230, #1a1a26);
+  border: 1px solid #333344;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.smd-reg-label {
+  font-size: 4px;
+  font-weight: 700;
+  color: rgba(180, 190, 200, 0.35);
+  letter-spacing: 0.3px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── Tactile Buttons ──────────────────────────────────────────── */
+
+.board-buttons {
+  display: flex;
+  gap: 24px;
+  margin: 6px 0;
+}
+
+.tactile-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.tactile-cap {
+  width: 14px;
+  height: 14px;
+  background: linear-gradient(145deg, #4a4a58, #3a3a48);
+  border: 1px solid #5a5a68;
+  border-radius: 2px;
+  cursor: pointer;
+  box-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: all 0.1s ease;
+}
+
+.tactile-cap:hover {
+  background: linear-gradient(145deg, #5a5a68, #4a4a58);
+  transform: translateY(1px);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+}
+
+.tactile-cap:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+.tactile-label {
+  font-size: 5px;
+  font-weight: 700;
+  color: rgba(200, 220, 200, 0.3);
+  letter-spacing: 0.5px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── Built-in SMD LED ─────────────────────────────────────────── */
+
+.builtin-led-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 2px 0;
+}
+
+.builtin-smd-led {
+  width: 6px;
+  height: 4px;
+  background: #2a3a34;
+  border: 0.5px solid #3a4a44;
+  border-radius: 0.5px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.builtin-smd-led.on {
+  background: #00ccff;
+  border-color: #00ddff;
+}
+
+.smd-led-glow {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 204, 255, 0.4) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.builtin-smd-led.on .smd-led-glow {
+  opacity: 1;
+}
+
+.builtin-led-text {
+  font-size: 5px;
+  font-weight: 700;
+  color: rgba(200, 220, 200, 0.3);
+  letter-spacing: 0.5px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── PCB Traces (decorative copper traces) ────────────────────── */
+
+.pcb-traces {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.trace {
+  position: absolute;
+  background: rgba(200, 168, 50, 0.06);
+}
+
+.trace.t1 {
+  width: 1px;
+  height: 60%;
+  top: 10%;
+  left: 20%;
+}
+
+.trace.t2 {
+  width: 40%;
+  height: 1px;
+  top: 35%;
+  left: 10%;
+}
+
+.trace.t3 {
+  width: 1px;
+  height: 40%;
+  top: 30%;
+  right: 25%;
+}
+
+.trace.t4 {
+  width: 30%;
+  height: 1px;
+  top: 65%;
+  right: 15%;
+}
+
+/* ── USB Connector ────────────────────────────────────────────── */
+
+.usb-connector {
+  margin-top: auto;
+  margin-bottom: -2px;
+}
+
+.usb-shell {
+  width: 32px;
+  height: 14px;
+  background: linear-gradient(180deg, #b0b0b8 0%, #8a8a92 50%, #a0a0a8 100%);
+  border: 1px solid #6a6a74;
+  border-radius: 2px 2px 3px 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.usb-inner {
+  width: 18px;
+  height: 6px;
+  background: linear-gradient(180deg, #1a1a24, #0e0e16);
+  border-radius: 1px;
+  border: 0.5px solid #3a3a48;
+}
+
+/* ── Status Badge ─────────────────────────────────────────────── */
+
+.board-status {
+  position: absolute;
+  bottom: 4px;
+  left: 8px;
+  font-size: 6px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.board-status.running {
+  color: #a6e3a1;
+  background: rgba(166, 227, 161, 0.1);
+}
+
+.board-status.stopped {
+  color: #f38ba8;
+  background: rgba(243, 139, 168, 0.1);
+}
+
+.board-status.idle {
+  color: #585b70;
+  background: rgba(88, 91, 112, 0.1);
+}
+
+.board-status.error {
+  color: #f38ba8;
+  background: rgba(243, 139, 168, 0.15);
+}

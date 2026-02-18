@@ -1,0 +1,261 @@
+/**
+ * App.css — Layout principal y estilos globales del ESP8266 Simulator
+ * Dark mode profesional basado en la paleta Catppuccin Mocha
+ */
+
+/* ── App Container ────────────────────────────────────────────── */
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #0f0f17;
+  color: #cdd6f4;
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  overflow: hidden;
+}
+
+/* ── Header ───────────────────────────────────────────────────── */
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: 48px;
+  background: #181825;
+  border-bottom: 1px solid #313244;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.header-left,
+.header-center,
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-center {
+  flex: 1;
+  justify-content: center;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-icon {
+  font-size: 20px;
+}
+
+.logo-text {
+  font-size: 14px;
+  font-weight: 800;
+  color: #cdd6f4;
+  letter-spacing: 0.3px;
+}
+
+.logo-version {
+  font-size: 9px;
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: #313244;
+  color: #6c7086;
+  font-weight: 600;
+}
+
+/* Project Name */
+.project-name-input {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 4px 8px;
+  color: #cdd6f4;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  min-width: 200px;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.project-name-input:hover {
+  border-color: #313244;
+}
+
+.project-name-input:focus {
+  outline: none;
+  border-color: #89b4fa;
+  background: #1e1e2e;
+}
+
+.unsaved-dot {
+  color: #f9e2af;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.last-saved {
+  font-size: 10px;
+  color: #585b70;
+}
+
+/* Connection Badge */
+.connection-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.3px;
+}
+
+.connection-badge.simulation {
+  background: rgba(137, 180, 250, 0.1);
+  color: #89b4fa;
+  border: 1px solid rgba(137, 180, 250, 0.2);
+}
+
+.connection-badge.hardware {
+  background: rgba(166, 227, 161, 0.1);
+  color: #a6e3a1;
+  border: 1px solid rgba(166, 227, 161, 0.2);
+}
+
+/* ── Main Layout ──────────────────────────────────────────────── */
+
+.app-main {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.panel {
+  min-height: 0;
+  min-width: 0;
+}
+
+/* ── Left Sidebar (Code Editor) ───────────────────────────────── */
+
+.panel-sidebar {
+  width: 50%;
+  min-width: 280px;
+  flex-shrink: 0;
+  border-right: 1px solid #313244;
+  background: #1e1e2e;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-terminal-inline {
+  height: 200px;
+  flex-shrink: 0;
+  border-top: 1px solid #313244;
+}
+
+/* ── Resize Handle ────────────────────────────────────────────── */
+
+.resize-handle {
+  width: 4px;
+  cursor: col-resize;
+  background: transparent;
+  flex-shrink: 0;
+  transition: background 0.15s ease;
+  position: relative;
+  z-index: 5;
+}
+
+.resize-handle:hover,
+.resize-handle:active {
+  background: #89b4fa;
+}
+
+/* ── Main Canvas (Simulation) ─────────────────────────────────── */
+
+.panel-canvas {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: #11111b;
+}
+
+/* Simulation Header (Wokwi-style tab bar) */
+.simulation-header {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  height: 36px;
+  background: #181825;
+  border-bottom: 1px solid #313244;
+  flex-shrink: 0;
+}
+
+.sim-tab {
+  font-size: 12px;
+  font-weight: 600;
+  color: #cdd6f4;
+  padding: 6px 16px;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.sim-tab.active {
+  color: #a6e3a1;
+  border-bottom-color: #a6e3a1;
+}
+
+/* Simulation Canvas — large dark area for the board */
+.simulation-canvas {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 50% 50%, #181825 0%, #11111b 70%),
+    repeating-linear-gradient(0deg, transparent, transparent 39px, #1a1a2e22 39px, #1a1a2e22 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px, #1a1a2e22 39px, #1a1a2e22 40px);
+  overflow: auto;
+  padding: 40px;
+  min-height: 0;
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .panel-sidebar {
+    width: 50%;
+    min-width: 260px;
+  }
+
+  .panel-terminal-inline {
+    height: 160px;
+  }
+}
+
+@media (max-width: 700px) {
+  .app-main {
+    flex-direction: column;
+  }
+
+  .panel-sidebar {
+    width: 100%;
+    height: 300px;
+    min-width: unset;
+    border-right: none;
+    border-bottom: 1px solid #313244;
+  }
+
+  .resize-handle {
+    display: none;
+  }
+
+  .header-center {
+    display: none;
+  }
+}

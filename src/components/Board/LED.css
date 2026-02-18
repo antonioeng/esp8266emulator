@@ -1,0 +1,130 @@
+/**
+ * LED.css — Estilos del componente LED con animación glow realista
+ */
+
+.led-component {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+  transition: all 0.3s ease;
+}
+
+/* ── Bulb ─────────────────────────────────────────────────────── */
+
+.led-bulb {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  position: relative;
+  background: #2a2a3c;
+  border: 2px solid #45475a;
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+/* LED encendido */
+.led-component.on .led-bulb {
+  background: var(--led-color, #00ff88);
+  border-color: var(--led-color, #00ff88);
+  box-shadow:
+    0 0 10px var(--led-glow, rgba(0, 255, 136, 0.5)),
+    0 0 25px var(--led-glow, rgba(0, 255, 136, 0.5)),
+    0 0 50px var(--led-glow-strong, rgba(0, 255, 136, 0.25)),
+    inset 0 0 10px rgba(255, 255, 255, 0.3);
+  animation: led-pulse 1.5s ease-in-out infinite;
+}
+
+/* LED apagado */
+.led-component.off .led-bulb {
+  background: #2a2a3c;
+  border-color: #45475a;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Reflejo de cristal */
+.led-glass {
+  position: absolute;
+  top: 3px;
+  left: 4px;
+  width: 12px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  transform: rotate(-30deg);
+}
+
+.led-component.on .led-glass {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.led-reflection {
+  position: absolute;
+  bottom: 4px;
+  right: 6px;
+  width: 6px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.led-component.on .led-reflection {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ── Label ────────────────────────────────────────────────────── */
+
+.led-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.led-name {
+  font-size: 10px;
+  font-weight: 700;
+  color: #cdd6f4;
+  letter-spacing: 0.5px;
+}
+
+.led-pin {
+  font-size: 8px;
+  color: #6c7086;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.led-state {
+  font-size: 9px;
+  font-weight: 700;
+  color: #6c7086;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: #1e1e2e;
+}
+
+.led-state.on {
+  color: #a6e3a1;
+  background: rgba(166, 227, 161, 0.1);
+}
+
+/* ── Animations ───────────────────────────────────────────────── */
+
+@keyframes led-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 10px var(--led-glow, rgba(0, 255, 136, 0.5)),
+      0 0 25px var(--led-glow, rgba(0, 255, 136, 0.5)),
+      0 0 50px var(--led-glow-strong, rgba(0, 255, 136, 0.25)),
+      inset 0 0 10px rgba(255, 255, 255, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 14px var(--led-glow, rgba(0, 255, 136, 0.6)),
+      0 0 30px var(--led-glow, rgba(0, 255, 136, 0.5)),
+      0 0 60px var(--led-glow-strong, rgba(0, 255, 136, 0.3)),
+      inset 0 0 12px rgba(255, 255, 255, 0.35);
+  }
+}
