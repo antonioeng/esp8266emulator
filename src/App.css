@@ -69,6 +69,29 @@
   transform: scale(1.05);
 }
 
+/* GitHub Link */
+.github-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--surface1);
+  border-radius: 8px;
+  background: var(--surface0);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.github-link:hover {
+  background: var(--surface1);
+  border-color: var(--surface2);
+  transform: scale(1.05);
+  color: var(--text);
+}
+
 /* Logo */
 .logo {
   display: flex;

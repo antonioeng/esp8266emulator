@@ -1,16 +1,101 @@
-# React + Vite
+# ⚡ ESP8266 Simulator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A browser-based ESP8266 (NodeMCU) simulator built with React. Write Arduino-style C++ code, run it in the browser, and see real-time GPIO, PWM, and Serial output — no hardware required.
 
-Currently, two official plugins are available:
+🔗 **Live Demo:** [antonioeng.github.io/esp8266emulator](https://antonioeng.github.io/esp8266emulator/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## ✨ Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Monaco Code Editor** — Full-featured editor with Arduino/C++ syntax highlighting, autocomplete, and error markers
+- **Real-time Simulation** — Execute `setup()` and `loop()` cycles directly in the browser
+- **GPIO & PWM Support** — `pinMode`, `digitalWrite`, `digitalRead`, `analogRead`, `analogWrite` with full PWM brightness control (0–1023)
+- **Serial Monitor** — `Serial.begin()`, `Serial.print()`, `Serial.println()` output displayed in a built-in terminal
+- **Realistic Board Visualization** — NodeMCU-style PCB with labeled pins, built-in SMD LED, antenna, USB connector, and tactile buttons
+- **External Components** — Connect LEDs to any GPIO pin with progressive PWM brightness
+- **Light & Dark Themes** — Catppuccin Mocha (dark) and Catppuccin Latte (light) with one-click toggle
+- **Project Management** — Auto-save, rename projects, export/import `.ino` files
+- **Resizable Panels** — Drag to resize editor and simulation panels
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+| Layer | Technology |
+|-------|-----------|
+| UI Framework | React 19 |
+| Build Tool | Vite 7 |
+| State Management | Zustand |
+| Code Editor | Monaco Editor (`@monaco-editor/react`) |
+| Styling | CSS Custom Properties + Catppuccin |
+| Deployment | GitHub Pages via GitHub Actions |
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm 9+
+
+### Install & Run
+
+```bash
+git clone https://github.com/antonioeng/esp8266emulator.git
+cd esp8266emulator
+npm install
+npm run dev
+```
+
+Open [http://localhost:5173/esp8266emulator/](http://localhost:5173/esp8266emulator/) in your browser.
+
+### Build for Production
+
+```bash
+npm run build
+npm run preview
+```
+
+## 📁 Project Structure
+
+```
+src/
+├── engine/
+│   ├── eventBus.js          # Pub/Sub event system
+│   ├── gpioManager.js       # GPIO & PWM pin management
+│   ├── parser.js            # Arduino C++ → JavaScript transpiler
+│   └── simulatorEngine.js   # Simulation orchestrator
+├── components/
+│   ├── Board/
+│   │   ├── ESP8266Board.jsx # NodeMCU board visualization
+│   │   ├── LED.jsx          # PWM-aware LED component
+│   │   └── Pin.jsx          # GPIO pin with tooltip
+│   ├── Editor/
+│   │   └── CodeEditor.jsx   # Monaco editor + toolbar
+│   └── Console/
+│       └── Terminal.jsx      # Serial monitor output
+├── store/
+│   └── useSimulatorStore.js # Zustand global state
+├── services/
+│   ├── projectService.js    # Save/load/autosave
+│   └── serialService.js     # WebSerial bridge (optional)
+├── App.jsx                  # Root layout & theme management
+└── index.css                # Theme variables (Catppuccin)
+```
+
+## 🎮 Supported Arduino API
+
+| Category | Functions |
+|----------|-----------|
+| GPIO | `pinMode()`, `digitalWrite()`, `digitalRead()` |
+| Analog | `analogRead()`, `analogWrite()` (PWM 0–1023) |
+| Serial | `Serial.begin()`, `Serial.print()`, `Serial.println()` |
+| Timing | `delay()`, `millis()`, `micros()` |
+| Constants | `HIGH`, `LOW`, `OUTPUT`, `INPUT`, `INPUT_PULLUP`, `LED_BUILTIN` |
+| Types | `int`, `long`, `bool`, `uint8_t`, `uint16_t`, `uint32_t`, `String`, `size_t` |
+
+## 📝 License
+
+MIT
+
+## 👤 Author
+
+**antonioeng** — [GitHub](https://github.com/antonioeng)
