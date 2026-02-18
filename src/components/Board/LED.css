@@ -1,5 +1,14 @@
 /**
- * LED.css — Estilos del componente LED con animación glow realista
+ * LED.css — PWM-aware LED visuals with smooth brightness transitions
+ *
+ * Architecture:
+ *   - All brightness is driven by CSS custom properties set from React:
+ *       --led-color         Base LED color (hex)
+ *       --led-brightness    0.0 → 1.0 (duty cycle / 1023)
+ *       --led-glow-radius   Computed glow spread in px
+ *       --led-glow-spread   Outer glow spread in px
+ *   - transition: all 0.15s ease on the bulb ensures smooth analog fading
+ *   - No animation when OFF; subtle pulse only at full brightness (1.0)
  */
 
 .led-component {
@@ -8,7 +17,6 @@
   align-items: center;
   gap: 6px;
   padding: 8px;
-  transition: all 0.3s ease;
 }
 
 /* ── Bulb ─────────────────────────────────────────────────────── */
@@ -18,29 +26,26 @@
   height: 32px;
   border-radius: 50%;
   position: relative;
-  background: #2a2a3c;
-  border: 2px solid #45475a;
-  transition: all 0.2s ease;
   overflow: hidden;
+  /* Smooth transition for ALL brightness changes (PWM fading) */
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.2s ease;
 }
 
-/* LED encendido */
-.led-component.on .led-bulb {
-  background: var(--led-color, #00ff88);
-  border-color: var(--led-color, #00ff88);
-  box-shadow:
-    0 0 10px var(--led-glow, rgba(0, 255, 136, 0.5)),
-    0 0 25px var(--led-glow, rgba(0, 255, 136, 0.5)),
-    0 0 50px var(--led-glow-strong, rgba(0, 255, 136, 0.25)),
-    inset 0 0 10px rgba(255, 255, 255, 0.3);
-  animation: led-pulse 1.5s ease-in-out infinite;
-}
-
-/* LED apagado */
+/* LED OFF — dark base */
 .led-component.off .led-bulb {
   background: #2a2a3c;
-  border-color: #45475a;
+  border: 2px solid #45475a;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* LED ON — brightness-driven via custom properties */
+.led-component.on .led-bulb {
+  background: color-mix(in srgb, var(--led-color, #00ff88) calc(var(--led-brightness, 1) * 100%), #2a2a3c);
+  border: 2px solid color-mix(in srgb, var(--led-color, #00ff88) calc(var(--led-brightness, 1) * 80%), #45475a);
+  box-shadow:
+    0 0 var(--led-glow-radius, 10px) color-mix(in srgb, var(--led-color, #00ff88) calc(var(--led-brightness, 1) * 50%), transparent),
+    0 0 var(--led-glow-spread, 25px) color-mix(in srgb, var(--led-color, #00ff88) calc(var(--led-brightness, 1) * 30%), transparent),
+    inset 0 0 10px rgba(255, 255, 255, calc(var(--led-brightness, 1) * 0.3));
 }
 
 /* Reflejo de cristal */
@@ -51,12 +56,13 @@
   width: 12px;
   height: 8px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.1);
   transform: rotate(-30deg);
+  transition: background 0.15s ease;
 }
 
 .led-component.on .led-glass {
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, calc(var(--led-brightness, 1) * 0.4));
 }
 
 .led-reflection {
@@ -66,11 +72,12 @@
   width: 6px;
   height: 4px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  transition: background 0.15s ease;
 }
 
 .led-component.on .led-reflection {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, calc(var(--led-brightness, 1) * 0.25));
 }
 
 /* ── Label ────────────────────────────────────────────────────── */
@@ -103,6 +110,7 @@
   padding: 1px 6px;
   border-radius: 3px;
   background: #1e1e2e;
+  transition: all 0.15s ease;
 }
 
 .led-state.on {
@@ -110,21 +118,10 @@
   background: rgba(166, 227, 161, 0.1);
 }
 
-/* ── Animations ───────────────────────────────────────────────── */
-
-@keyframes led-pulse {
-  0%, 100% {
-    box-shadow:
-      0 0 10px var(--led-glow, rgba(0, 255, 136, 0.5)),
-      0 0 25px var(--led-glow, rgba(0, 255, 136, 0.5)),
-      0 0 50px var(--led-glow-strong, rgba(0, 255, 136, 0.25)),
-      inset 0 0 10px rgba(255, 255, 255, 0.3);
-  }
-  50% {
-    box-shadow:
-      0 0 14px var(--led-glow, rgba(0, 255, 136, 0.6)),
-      0 0 30px var(--led-glow, rgba(0, 255, 136, 0.5)),
-      0 0 60px var(--led-glow-strong, rgba(0, 255, 136, 0.3)),
-      inset 0 0 12px rgba(255, 255, 255, 0.35);
-  }
+.led-pwm-value {
+  font-size: 7px;
+  font-weight: 600;
+  color: #89b4fa;
+  font-family: 'JetBrains Mono', monospace;
+  opacity: 0.7;
 }

@@ -271,6 +271,7 @@ class SimulatorEngine {
       __serial: this._buildSerialAPI(),
       __delay: this._delay.bind(this),
       __millis: () => Date.now() - this._startTime,
+      __micros: () => (Date.now() - this._startTime) * 1000,
       __checkRunning: () => {
         if (!this._running) throw new Error("__STOP__");
       },

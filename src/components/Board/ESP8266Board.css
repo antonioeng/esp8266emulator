@@ -367,25 +367,27 @@
   border: 0.5px solid #3a4a44;
   border-radius: 0.5px;
   position: relative;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .builtin-smd-led.on {
-  background: #00ccff;
-  border-color: #00ddff;
+  background: color-mix(in srgb, #00ccff calc(var(--led-brightness, 1) * 100%), #2a3a34);
+  border-color: color-mix(in srgb, #00ddff calc(var(--led-brightness, 1) * 80%), #3a4a44);
 }
 
 .smd-led-glow {
   position: absolute;
-  inset: -6px;
+  inset: calc(-1 * var(--led-glow-radius, 6px));
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 204, 255, 0.4) 0%, transparent 70%);
+  background: radial-gradient(circle,
+    color-mix(in srgb, rgba(0, 204, 255, 0.6) calc(var(--led-brightness, 1) * 100%), transparent) 0%,
+    transparent 70%);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.2s ease, inset 0.2s ease;
 }
 
 .builtin-smd-led.on .smd-led-glow {
-  opacity: 1;
+  opacity: var(--led-brightness, 1);
 }
 
 .builtin-led-text {

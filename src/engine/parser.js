@@ -163,12 +163,14 @@ export function parseArduinoCode(code) {
 
   // 3. Reemplazar tipos C++ → let/const
   jsCode = jsCode.replace(/\b(unsigned\s+)?(int|long|short|byte|char|float|double|boolean)\s+/g, "let ");
+  jsCode = jsCode.replace(/\b(uint8_t|uint16_t|uint32_t|int8_t|int16_t|int32_t|size_t)\s+/g, "let ");
   jsCode = jsCode.replace(/\bString\s+/g, "let ");
   jsCode = jsCode.replace(/\bbool\s+/g, "let ");
 
-  // 4. Reemplazar void → async function
+  // 4. Reemplazar void → async function (setup/loop first, then user-defined)
   jsCode = jsCode.replace(/void\s+setup\s*\(\s*\)/g, "async function __setup()");
   jsCode = jsCode.replace(/void\s+loop\s*\(\s*\)/g, "async function __loop()");
+  jsCode = jsCode.replace(/void\s+(\w+)\s*\(([^)]*)\)/g, "async function $1($2)");
 
   // 5. Reemplazar delay → await __delay
   jsCode = jsCode.replace(/\bdelay\s*\(/g, "await __delay(");
@@ -186,10 +188,14 @@ export function parseArduinoCode(code) {
   jsCode = jsCode.replace(/\bSerial\.available\s*\(/g, "__serial.available(");
   jsCode = jsCode.replace(/\bSerial\.read\s*\(/g, "__serial.read(");
 
-  // 8. Reemplazar millis()
+  // 8. Reemplazar millis() y micros()
   jsCode = jsCode.replace(/\bmillis\s*\(\s*\)/g, "__millis()");
+  jsCode = jsCode.replace(/\bmicros\s*\(\s*\)/g, "__micros()");
 
-  // 9. Reemplazar constantes Arduino
+  // 9. Reemplazar analogWrite
+  jsCode = jsCode.replace(/\banalogWrite\s*\(/g, "__gpio.analogWrite(");
+
+  // 10. Reemplazar constantes Arduino
   Object.entries(ARDUINO_CONSTANTS).forEach(([key, value]) => {
     // Solo reemplazar como palabra completa, no dentro de strings
     const regex = new RegExp(`\\b${key}\\b`, "g");
@@ -213,6 +219,7 @@ export function compileFunctions(jsCode, context) {
     __serial,
     __delay,
     __millis,
+    __micros,
     __checkRunning,
   } = context;
 
@@ -229,6 +236,7 @@ export function compileFunctions(jsCode, context) {
       "__serial",
       "__delay",
       "__millis",
+      "__micros",
       "__checkRunning",
       "HIGH", "LOW", "OUTPUT", "INPUT", "INPUT_PULLUP",
       wrappedCode
@@ -239,6 +247,7 @@ export function compileFunctions(jsCode, context) {
       __serial,
       __delay,
       __millis,
+      __micros,
       __checkRunning,
       1, 0, "OUTPUT", "INPUT", "INPUT_PULLUP"
     );

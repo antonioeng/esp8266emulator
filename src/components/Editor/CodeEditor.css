@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: #1e1e2e;
+  background: var(--base);
   overflow: hidden;
 }
 
@@ -17,8 +17,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 8px 12px;
-  background: #181825;
-  border-bottom: 1px solid #313244;
+  background: var(--mantle);
+  border-bottom: 1px solid var(--surface0);
   gap: 8px;
   flex-shrink: 0;
 }
@@ -35,10 +35,10 @@
   align-items: center;
   gap: 5px;
   padding: 6px 12px;
-  border: 1px solid #45475a;
+  border: 1px solid var(--surface1);
   border-radius: 6px;
-  background: #313244;
-  color: #cdd6f4;
+  background: var(--surface0);
+  color: var(--text);
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
@@ -48,8 +48,8 @@
 }
 
 .toolbar-btn:hover:not(:disabled) {
-  background: #45475a;
-  border-color: #585b70;
+  background: var(--surface1);
+  border-color: var(--surface2);
 }
 
 .toolbar-btn:disabled {
@@ -124,19 +124,19 @@
 /* Secondary buttons */
 .btn-secondary {
   background: transparent;
-  border-color: #45475a;
+  border-color: var(--surface1);
   font-size: 11px;
   padding: 5px 10px;
 }
 
 .btn-secondary:hover {
-  background: #313244 !important;
+  background: var(--surface0) !important;
 }
 
 .toolbar-separator {
   width: 1px;
   height: 24px;
-  background: #45475a;
+  background: var(--surface1);
   margin: 0 4px;
 }
 

@@ -13,7 +13,7 @@
  * Solo modifica el store y delega al engine vía servicios.
  */
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import Editor from "@monaco-editor/react";
 import useSimulatorStore from "../../store/useSimulatorStore.js";
 import simulatorEngine from "../../engine/simulatorEngine.js";
@@ -235,6 +235,20 @@ export default function CodeEditor() {
   const projectName = useSimulatorStore((s) => s.projectName);
   const setProjectSaved = useSimulatorStore((s) => s.setProjectSaved);
 
+  // Track page theme for Monaco
+  const [editorTheme, setEditorTheme] = useState(
+    () => document.documentElement.getAttribute("data-theme") === "light" ? "vs" : "vs-dark"
+  );
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      const t = document.documentElement.getAttribute("data-theme");
+      setEditorTheme(t === "light" ? "vs" : "vs-dark");
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => observer.disconnect();
+  }, []);
+
   // Handlers
   const handleRun = useCallback(() => {
     simulatorEngine.run(code);
@@ -355,10 +369,11 @@ export default function CodeEditor() {
           <button
             className={`toolbar-btn btn-run ${isRunning ? "active" : ""}`}
             onClick={handleRun}
+            disabled={isRunning}
             title="Ejecutar (Ctrl+Enter)"
           >
             <span className="btn-icon">▶</span>
-            Run
+            {isRunning ? "Running…" : "Run"}
           </button>
           <button
             className="toolbar-btn btn-stop"
@@ -413,7 +428,7 @@ export default function CodeEditor() {
         <Editor
           height="100%"
           defaultLanguage="cpp"
-          theme="vs-dark"
+          theme={editorTheme}
           value={code}
           onChange={handleCodeChange}
           onMount={handleEditorMount}

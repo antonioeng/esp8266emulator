@@ -13,7 +13,7 @@ import { useState, useCallback } from "react";
 import gpioManager from "../../engine/gpioManager.js";
 import "./Pin.css";
 
-export default function Pin({ gpio, alias, label, mode, value, side, isPower }) {
+export default function Pin({ gpio, alias, label, mode, value, side, isPower, pwmValue = 0, brightness = 0 }) {
   const [showTooltip, setShowTooltip] = useState(false);
 
   const isOutput = mode === "OUTPUT";
@@ -79,6 +79,14 @@ export default function Pin({ gpio, alias, label, mode, value, side, isPower }) 
               {isHigh ? "HIGH" : "LOW"}
             </span>
           </div>
+          {pwmValue > 0 && pwmValue < 1023 && (
+            <div className="tt-row">
+              <span className="tt-key">PWM</span>
+              <span className="tt-val v-pwm">
+                {pwmValue}/1023 ({Math.round(brightness * 100)}%)
+              </span>
+            </div>
+          )}
           {!isOutput && isConfigured && (
             <div className="tt-hint">Click to toggle</div>
           )}

@@ -12,7 +12,7 @@
 }
 
 :root {
-  /* Catppuccin Mocha */
+  /* Catppuccin Mocha (Dark — default) */
   --crust: #11111b;
   --mantle: #181825;
   --base: #1e1e2e;
@@ -42,6 +42,31 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Catppuccin Latte (Light theme) ────────────────────────────── */
+[data-theme="light"] {
+  --crust: #dce0e8;
+  --mantle: #e6e9ef;
+  --base: #eff1f5;
+  --surface0: #ccd0da;
+  --surface1: #bcc0cc;
+  --surface2: #acb0be;
+  --overlay0: #9ca0b0;
+  --overlay1: #8c8fa1;
+  --subtext0: #6c6f85;
+  --text: #4c4f69;
+
+  --blue: #1e66f5;
+  --green: #40a02b;
+  --red: #d20f39;
+  --yellow: #df8e1d;
+  --mauve: #8839ef;
+  --teal: #179299;
+
+  color-scheme: light;
+  color: var(--text);
+  background-color: var(--crust);
 }
 
 html, body, #root {

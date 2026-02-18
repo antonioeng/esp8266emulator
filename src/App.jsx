@@ -23,6 +23,13 @@ import serialService from "./services/serialService.js";
 import projectService from "./services/projectService.js";
 import "./App.css";
 
+// ── Theme helper ──────────────────────────────────────────────────
+function getInitialTheme() {
+  try {
+    return localStorage.getItem("esp-sim-theme") || "dark";
+  } catch { return "dark"; }
+}
+
 export default function App() {
   const setEngineState = useSimulatorStore((s) => s.setEngineState);
   const setConnectionMode = useSimulatorStore((s) => s.setConnectionMode);
@@ -34,6 +41,18 @@ export default function App() {
   const projectName = useSimulatorStore((s) => s.projectName);
   const projectSaved = useSimulatorStore((s) => s.projectSaved);
   const lastSaved = useSimulatorStore((s) => s.lastSaved);
+
+  // ── Theme toggle ─────────────────────────────────────────────────
+  const [theme, setTheme] = useState(getInitialTheme);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    try { localStorage.setItem("esp-sim-theme", theme); } catch {}
+  }, [theme]);
+
+  const toggleTheme = useCallback(() => {
+    setTheme((t) => (t === "dark" ? "light" : "dark"));
+  }, []);
 
   // ── Resize logic ─────────────────────────────────────────────────
   const [sidebarWidth, setSidebarWidth] = useState(null); // null = use CSS default 50%
@@ -127,6 +146,13 @@ export default function App() {
             <span className="logo-text">ESP8266 Simulator</span>
             <span className="logo-version">v1.0</span>
           </div>
+          <button
+            className="theme-toggle"
+            onClick={toggleTheme}
+            title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {theme === "dark" ? "☀️" : "🌙"}
+          </button>
         </div>
         <div className="header-center">
           <input
@@ -139,9 +165,9 @@ export default function App() {
             spellCheck={false}
           />
           {!projectSaved && <span className="unsaved-dot" title="Cambios sin guardar">●</span>}
-          {lastSaved && (
-            <span className="last-saved">
-              Guardado: {new Date(lastSaved).toLocaleTimeString()}
+          {projectSaved && lastSaved && (
+            <span className="saved-indicator" title={`Guardado: ${new Date(lastSaved).toLocaleTimeString()}`}>
+              ✓
             </span>
           )}
         </div>

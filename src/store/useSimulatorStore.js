@@ -56,29 +56,25 @@ const useSimulatorStore = create((set, get) => ({
 
   // ── Serial / Console Logs ──────────────────────────────────────
   logs: [],
-  maxLogs: 1000,
+  maxLogs: 500,
 
   addLog: (log) =>
     set((state) => {
-      const newLogs = [
-        ...state.logs,
-        {
-          id: Date.now() + Math.random(),
-          timestamp: new Date().toLocaleTimeString("es-ES", {
-            hour12: false,
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-            fractionalSecondDigits: 3,
-          }),
-          ...log,
-        },
-      ];
-      // Limitar cantidad de logs
-      if (newLogs.length > state.maxLogs) {
-        return { logs: newLogs.slice(-state.maxLogs) };
-      }
-      return { logs: newLogs };
+      const entry = {
+        id: Date.now() + Math.random(),
+        timestamp: new Date().toLocaleTimeString("es-ES", {
+          hour12: false,
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          fractionalSecondDigits: 3,
+        }),
+        ...log,
+      };
+      const logs = state.logs.length >= state.maxLogs
+        ? [...state.logs.slice(-(state.maxLogs - 1)), entry]
+        : [...state.logs, entry];
+      return { logs };
     }),
 
   clearLogs: () => set({ logs: [] }),

@@ -61,7 +61,13 @@ export default function ESP8266Board() {
     const unsubPin = eventBus.on("pin-change", (data) => {
       setPinStates((prev) => ({
         ...prev,
-        [data.pin]: { mode: data.mode, value: data.value, alias: data.alias },
+        [data.pin]: {
+          mode: data.mode,
+          value: data.value,
+          alias: data.alias,
+          pwmValue: data.pwmValue ?? (data.value === 1 ? 1023 : 0),
+          brightness: data.brightness ?? (data.value === 1 ? 1.0 : 0.0),
+        },
       }));
     });
     const unsubReset = eventBus.on("gpio-reset", () => {
@@ -80,7 +86,12 @@ export default function ESP8266Board() {
   }, [engineState]);
 
   const getPinState = (gpio) =>
-    gpio != null ? (pinStates[gpio] || { mode: null, value: 0 }) : { mode: null, value: 0 };
+    gpio != null
+      ? (pinStates[gpio] || { mode: null, value: 0, pwmValue: 0, brightness: 0 })
+      : { mode: null, value: 0, pwmValue: 0, brightness: 0 };
+
+  // Built-in LED brightness (GPIO2)
+  const builtinBrightness = getPinState(2).brightness;
 
   return (
     <div className="board-wrapper">
@@ -110,11 +121,15 @@ export default function ESP8266Board() {
       <div className="nodemcu-board">
         {/* Left pin header */}
         <div className="pin-header left">
-          {LEFT_PINS.map((p, i) => (
-            <Pin key={`l-${i}`} gpio={p.gpio} alias={p.alias} label={p.label}
-              mode={getPinState(p.gpio).mode} value={getPinState(p.gpio).value}
-              side="left" isPower={["3V3","GND","VIN","RSV"].includes(p.alias)} />
-          ))}
+          {LEFT_PINS.map((p, i) => {
+            const ps = getPinState(p.gpio);
+            return (
+              <Pin key={`l-${i}`} gpio={p.gpio} alias={p.alias} label={p.label}
+                mode={ps.mode} value={ps.value}
+                pwmValue={ps.pwmValue} brightness={ps.brightness}
+                side="left" isPower={["3V3","GND","VIN","RSV"].includes(p.alias)} />
+            );
+          })}
         </div>
 
         {/* PCB body */}
@@ -189,9 +204,15 @@ export default function ESP8266Board() {
             </div>
           </div>
 
-          {/* Built-in SMD LED */}
+          {/* Built-in SMD LED — PWM brightness driven */}
           <div className="builtin-led-row">
-            <div className={`builtin-smd-led ${pinStates[2]?.value === 1 ? "on" : ""}`}>
+            <div
+              className={`builtin-smd-led ${builtinBrightness > 0 ? "on" : ""}`}
+              style={{
+                "--led-brightness": builtinBrightness,
+                "--led-glow-radius": `${6 + builtinBrightness * 14}px`,
+              }}
+            >
               <div className="smd-led-glow" />
             </div>
             <span className="builtin-led-text">LED</span>
@@ -223,11 +244,15 @@ export default function ESP8266Board() {
 
         {/* Right pin header */}
         <div className="pin-header right">
-          {RIGHT_PINS.map((p, i) => (
-            <Pin key={`r-${i}`} gpio={p.gpio} alias={p.alias} label={p.label}
-              mode={getPinState(p.gpio).mode} value={getPinState(p.gpio).value}
-              side="right" isPower={["3V3","GND","VIN","RSV"].includes(p.alias)} />
-          ))}
+          {RIGHT_PINS.map((p, i) => {
+            const ps = getPinState(p.gpio);
+            return (
+              <Pin key={`r-${i}`} gpio={p.gpio} alias={p.alias} label={p.label}
+                mode={ps.mode} value={ps.value}
+                pwmValue={ps.pwmValue} brightness={ps.brightness}
+                side="right" isPower={["3V3","GND","VIN","RSV"].includes(p.alias)} />
+            );
+          })}
         </div>
       </div>
     </div>

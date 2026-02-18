@@ -9,8 +9,8 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: #0f0f17;
-  color: #cdd6f4;
+  background: var(--crust);
+  color: var(--text);
   font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
   overflow: hidden;
 }
@@ -23,8 +23,8 @@
   justify-content: space-between;
   padding: 0 16px;
   height: 48px;
-  background: #181825;
-  border-bottom: 1px solid #313244;
+  background: var(--mantle);
+  border-bottom: 1px solid var(--surface0);
   flex-shrink: 0;
   z-index: 10;
 }
@@ -37,9 +37,36 @@
   gap: 10px;
 }
 
+.header-left {
+  gap: 12px;
+}
+
 .header-center {
   flex: 1;
   justify-content: center;
+}
+
+/* Theme Toggle */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--surface1);
+  border-radius: 8px;
+  background: var(--surface0);
+  cursor: pointer;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+.theme-toggle:hover {
+  background: var(--surface1);
+  border-color: var(--surface2);
+  transform: scale(1.05);
 }
 
 /* Logo */
@@ -56,7 +83,7 @@
 .logo-text {
   font-size: 14px;
   font-weight: 800;
-  color: #cdd6f4;
+  color: var(--text);
   letter-spacing: 0.3px;
 }
 
@@ -64,8 +91,8 @@
   font-size: 9px;
   padding: 2px 5px;
   border-radius: 4px;
-  background: #313244;
-  color: #6c7086;
+  background: var(--surface0);
+  color: var(--overlay0);
   font-weight: 600;
 }
 
@@ -75,7 +102,7 @@
   border: 1px solid transparent;
   border-radius: 4px;
   padding: 4px 8px;
-  color: #cdd6f4;
+  color: var(--text);
   font-size: 13px;
   font-weight: 600;
   text-align: center;
@@ -85,13 +112,13 @@
 }
 
 .project-name-input:hover {
-  border-color: #313244;
+  border-color: var(--surface0);
 }
 
 .project-name-input:focus {
   outline: none;
-  border-color: #89b4fa;
-  background: #1e1e2e;
+  border-color: var(--blue);
+  background: var(--base);
 }
 
 .unsaved-dot {
@@ -100,9 +127,16 @@
   line-height: 1;
 }
 
-.last-saved {
-  font-size: 10px;
-  color: #585b70;
+.saved-indicator {
+  font-size: 12px;
+  color: #a6e3a1;
+  cursor: default;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.saved-indicator:hover {
+  opacity: 1;
 }
 
 /* Connection Badge */
@@ -145,8 +179,8 @@
   width: 50%;
   min-width: 280px;
   flex-shrink: 0;
-  border-right: 1px solid #313244;
-  background: #1e1e2e;
+  border-right: 1px solid var(--surface0);
+  background: var(--base);
   display: flex;
   flex-direction: column;
 }
@@ -154,7 +188,7 @@
 .panel-terminal-inline {
   height: 200px;
   flex-shrink: 0;
-  border-top: 1px solid #313244;
+  border-top: 1px solid var(--surface0);
 }
 
 /* ── Resize Handle ────────────────────────────────────────────── */
@@ -171,7 +205,7 @@
 
 .resize-handle:hover,
 .resize-handle:active {
-  background: #89b4fa;
+  background: var(--blue);
 }
 
 /* ── Main Canvas (Simulation) ─────────────────────────────────── */
@@ -181,7 +215,7 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
-  background: #11111b;
+  background: var(--crust);
 }
 
 /* Simulation Header (Wokwi-style tab bar) */
@@ -190,15 +224,15 @@
   align-items: center;
   padding: 0 12px;
   height: 36px;
-  background: #181825;
-  border-bottom: 1px solid #313244;
+  background: var(--mantle);
+  border-bottom: 1px solid var(--surface0);
   flex-shrink: 0;
 }
 
 .sim-tab {
   font-size: 12px;
   font-weight: 600;
-  color: #cdd6f4;
+  color: var(--text);
   padding: 6px 16px;
   border-bottom: 2px solid transparent;
   cursor: pointer;
@@ -206,8 +240,8 @@
 }
 
 .sim-tab.active {
-  color: #a6e3a1;
-  border-bottom-color: #a6e3a1;
+  color: var(--green);
+  border-bottom-color: var(--green);
 }
 
 /* Simulation Canvas — large dark area for the board */
@@ -217,9 +251,9 @@
   align-items: center;
   justify-content: center;
   background:
-    radial-gradient(circle at 50% 50%, #181825 0%, #11111b 70%),
-    repeating-linear-gradient(0deg, transparent, transparent 39px, #1a1a2e22 39px, #1a1a2e22 40px),
-    repeating-linear-gradient(90deg, transparent, transparent 39px, #1a1a2e22 39px, #1a1a2e22 40px);
+    radial-gradient(circle at 50% 50%, var(--mantle) 0%, var(--crust) 70%),
+    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(100,100,150,0.05) 39px, rgba(100,100,150,0.05) 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(100,100,150,0.05) 39px, rgba(100,100,150,0.05) 40px);
   overflow: auto;
   padding: 40px;
   min-height: 0;
@@ -248,7 +282,7 @@
     height: 300px;
     min-width: unset;
     border-right: none;
-    border-bottom: 1px solid #313244;
+    border-bottom: 1px solid var(--surface0);
   }
 
   .resize-handle {

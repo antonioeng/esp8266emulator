@@ -152,6 +152,11 @@
   color: #6c7086;
 }
 
+.tt-val.v-pwm {
+  color: #f9e2af;
+  font-size: 9px;
+}
+
 .tt-hint {
   font-size: 8px;
   color: #89b4fa;

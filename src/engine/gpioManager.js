@@ -77,6 +77,8 @@ class GPIOManager {
       this._pins.set(gpio, {
         mode: null,
         value: PIN_VALUE.LOW,
+        pwmValue: 0,      // 0-1023 analog duty cycle
+        isPWM: false,      // true when driven by analogWrite
         alias: this._getAlias(gpio),
       });
     });
@@ -175,15 +177,30 @@ class GPIOManager {
     const normalizedValue = value ? PIN_VALUE.HIGH : PIN_VALUE.LOW;
     pinState.value = normalizedValue;
 
+    // ── Clear PWM state: digitalWrite overrides analogWrite ─────
+    pinState.isPWM = false;
+    pinState.pwmValue = normalizedValue === PIN_VALUE.HIGH ? 1023 : 0;
+    const brightness = normalizedValue === PIN_VALUE.HIGH ? 1.0 : 0.0;
+
+    // Emit pwm-change so LEDs snap to full-on / full-off
+    eventBus.emit("pwm-change", {
+      pin: gpio,
+      alias: pinState.alias,
+      value: pinState.pwmValue,
+      brightness,
+    });
+
     eventBus.emit("pin-change", {
       pin: gpio,
       alias: pinState.alias,
       mode: pinState.mode,
       value: normalizedValue,
+      pwmValue: pinState.pwmValue,
+      brightness,
     });
 
     // Notificar a componentes registrados en este pin
-    this._notifyComponents(gpio, normalizedValue);
+    this._notifyComponents(gpio, normalizedValue, pinState.pwmValue);
   }
 
   /**
@@ -214,6 +231,79 @@ class GPIOManager {
   analogRead() {
     const pinState = this._pins.get(17); // A0
     return pinState.value;
+  }
+
+  /**
+   * Escribe un valor PWM (0-1023) en un pin. ESP8266 soporta PWM por software
+   * en todos los GPIO excepto GPIO16.
+   *
+   * Arquitectura PWM simulada:
+   *   - Almacena pwmValue (0-1023) como duty-cycle analógico
+   *   - Marca el pin como isPWM = true para distinguir de digitalWrite
+   *   - Emite "pwm-change" (datos analógicos para LEDs/servos)
+   *   - También emite "pin-change" (compatibilidad con Pin visualización digital)
+   *   - Notifica componentes registrados con el valor analógico
+   *
+   * @param {number|string} pin   Identificador del pin
+   * @param {number}         value Duty cycle 0-1023
+   */
+  analogWrite(pin, value) {
+    const gpio = this.resolvePin(pin);
+    this._validateGpio(gpio);
+
+    const pinState = this._pins.get(gpio);
+
+    // ── Validación de rango ──────────────────────────────────────
+    if (value < 0 || value > 1023) {
+      eventBus.emit("serial-log", {
+        message: `⚠ analogWrite(${gpio}, ${value}): valor fuera de rango 0-1023, clamped`,
+        type: "warn",
+      });
+    }
+    const clampedValue = Math.max(0, Math.min(1023, Math.round(value)));
+
+    // ── Validación de modo ───────────────────────────────────────
+    if (pinState.mode !== PIN_MODE.OUTPUT && pinState.mode !== null) {
+      eventBus.emit("serial-log", {
+        message: `⚠ analogWrite en GPIO${gpio} sin pinMode(OUTPUT)`,
+        type: "warn",
+      });
+    }
+
+    // GPIO16 no soporta PWM en ESP8266 real
+    if (gpio === 16) {
+      eventBus.emit("serial-log", {
+        message: `⚠ GPIO16 no soporta PWM hardware; simulando por software`,
+        type: "warn",
+      });
+    }
+
+    // ── Actualizar estado del pin ────────────────────────────────
+    pinState.isPWM = true;
+    pinState.pwmValue = clampedValue;
+    pinState.value = clampedValue > 0 ? PIN_VALUE.HIGH : PIN_VALUE.LOW;
+
+    // ── Emitir evento PWM dedicado (para LEDs con brillo) ───────
+    const brightness = clampedValue / 1023;
+    eventBus.emit("pwm-change", {
+      pin: gpio,
+      alias: pinState.alias,
+      value: clampedValue,
+      brightness,               // 0.0 – 1.0 normalizado
+    });
+
+    // ── Emitir pin-change para compatibilidad con Pin dots ──────
+    eventBus.emit("pin-change", {
+      pin: gpio,
+      alias: pinState.alias,
+      mode: pinState.mode,
+      value: pinState.value,
+      pwmValue: clampedValue,
+      brightness,
+    });
+
+    // ── Notificar componentes registrados ────────────────────────
+    this._notifyComponents(gpio, pinState.value, clampedValue);
   }
 
   /**
@@ -290,7 +380,7 @@ class GPIOManager {
    * @param {number} gpio
    * @param {number} value
    */
-  _notifyComponents(gpio, value) {
+  _notifyComponents(gpio, value, analogValue = 0) {
     const components = this._components.get(gpio);
     if (components) {
       components.forEach((comp) => {
@@ -299,6 +389,8 @@ class GPIOManager {
           type: comp.type,
           pin: gpio,
           value,
+          analogValue,
+          brightness: analogValue / 1023,
         });
       });
     }

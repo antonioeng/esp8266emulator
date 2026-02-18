@@ -6,9 +6,10 @@
  * todo se comunica mediante eventos.
  * 
  * Eventos principales:
- *   "pin-change"    → { pin: Number, value: 0|1, mode: String }
- *   "serial-log"    → { message: String, type: "info"|"warn"|"error" }
- *   "engine-state"  → { state: "running"|"stopped"|"paused"|"error" }
+ *   "pin-change"       → { pin, value: 0|1, mode, pwmValue?, brightness? }
+ *   "pwm-change"       → { pin, value: 0-1023, brightness: 0.0-1.0 }
+ *   "serial-log"       → { message: String, type: "info"|"warn"|"error" }
+ *   "engine-state"     → { state: "running"|"stopped"|"paused"|"error" }
  *   "component-update" → { id: String, type: String, ...data }
  * 
  * Diseño: Singleton exportado para que todos los módulos compartan
